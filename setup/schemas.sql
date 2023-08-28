@@ -1,3 +1,5 @@
+USE library_management_system;
+
 CREATE TABLE book (
     book_id INT PRIMARY KEY IDENTITY (1, 1),
     title NVARCHAR(100) NOT NULL,
