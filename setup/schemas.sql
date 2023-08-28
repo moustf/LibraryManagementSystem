@@ -19,7 +19,6 @@ BEGIN
     status BIT DEFAULT 0 NOT NULL,
     created_at DATETIME DEFAULT GETDATE() NOT NULL,
     updated_at DATETIME DEFAULT GETDATE() NOT NULL,
-    CONSTRAINT CHK_BookStatus CHECK (status IN ('available', 'borrowed')),
     CONSTRAINT CHK_GenreEnum CHECK (genre IN (
         'Thriller', 'Documentary', 'Drama', 'Horror', 'Romance', 'Mystery', 'Crime', 'Comedy', 'Western', 'Children', 'Action', 'Science Fiction', 'Animation','Fantasy', 'Adventure'
         )),
