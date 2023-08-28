@@ -1,44 +1,77 @@
 USE library_management_system;
 
-CREATE TABLE book (
+IF NOT EXISTS
+    (
+        SELECT TOP 1 1
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_SCHEMA = 'dbo'
+            AND TABLE_NAME = 'book'
+            AND COLUMN_NAME = 'book_id'
+    )
+BEGIN
+    CREATE TABLE book (
     book_id INT PRIMARY KEY IDENTITY (1, 1),
     title NVARCHAR(100) NOT NULL,
     author NVARCHAR(100) NOT NULL,
     isbn NVARCHAR(17) NOT NULL,
-    genre NVARCHAR(50),
+    genre NVARCHAR(50) NOT NULL,
     shelf_location NVARCHAR(100) NOT NULL,
-    status NVARCHAR(10) DEFAULT 'available',
+    status BIT DEFAULT 0 NOT NULL,
+    created_at DATETIME DEFAULT GETDATE() NOT NULL,
+    updated_at DATETIME DEFAULT GETDATE() NOT NULL,
     CONSTRAINT CHK_BookStatus CHECK (status IN ('available', 'borrowed')),
-    created_at DATETIME DEFAULT GETDATE(),
-    updated_at DATETIME DEFAULT GETDATE(),
+    CONSTRAINT CHK_GenreEnum CHECK (genre IN (
+        'Thriller', 'Documentary', 'Drama', 'Horror', 'Romance', 'Mystery', 'Crime', 'Comedy', 'Western', 'Children', 'Action', 'Science Fiction', 'Animation','Fantasy', 'Adventure'
+        )),
 );
+END;
 
 GO
 
-CREATE TABLE borrower (
-  borrower_id INT PRIMARY KEY IDENTITY (1, 1),
-  first_name NVARCHAR(20) NOT NULL,
-  last_name NVARCHAR(20) NOT NULL,
-  email NVARCHAR(319) NOT NULL UNIQUE,
-  date_of_birth DATETIME,
-  membership_date DATETIME DEFAULT GETDATE(),
-  created_at DATETIME DEFAULT GETDATE(),
-  updated_at DATETIME DEFAULT GETDATE(),
+IF NOT EXISTS
+    (
+        SELECT TOP 1 1
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_SCHEMA = 'dbo'
+            AND TABLE_NAME = 'borrower'
+            AND COLUMN_NAME = 'borrower_id'
+    )
+BEGIN
+    CREATE TABLE borrower (
+    borrower_id INT PRIMARY KEY IDENTITY (1, 1),
+    first_name NVARCHAR(20) NOT NULL,
+    last_name NVARCHAR(20) NOT NULL,
+    email NVARCHAR(319) NOT NULL UNIQUE,
+    date_of_birth DATETIME NOT NULL,
+    membership_date DATETIME NOT NULL DEFAULT GETDATE(),
+    created_at DATETIME NOT NULL DEFAULT GETDATE(),
+    updated_at DATETIME NOT NULL DEFAULT GETDATE(),
 );
+END;
 
 GO
 
-CREATE TABLE loan (
-  loan_id INT PRIMARY KEY IDENTITY (1, 1),
-  book_id INT NOT NULL,
-  borrower_id INT NOT NULL,
-  date_borrowed DATETIME DEFAULT GETDate(),
-  due_date DATETIME,
-  date_returned DATETIME DEFAULT null,
-  created_at DATETIME DEFAULT GETDATE(),
-  updated_at DATETIME DEFAULT GETDATE(),
-  CONSTRAINT book_id_fk FOREIGN KEY (book_id) REFERENCES book (book_id),
-  CONSTRAINT borrower_id_fk FOREIGN KEY (borrower_id) REFERENCES borrower (borrower_id),
+IF NOT EXISTS
+    (
+        SELECT TOP 1 1
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_SCHEMA = 'dbo'
+            AND TABLE_NAME = 'loan'
+            AND COLUMN_NAME = 'loan_id'
+    )
+BEGIN
+    CREATE TABLE loan (
+      loan_id INT PRIMARY KEY IDENTITY (1, 1),
+      book_id INT NOT NULL,
+      borrower_id INT NOT NULL,
+      date_borrowed DATETIME NOT NULL DEFAULT GETDate(),
+      due_date DATETIME NOT NULL,
+      date_returned DATETIME DEFAULT null,
+      created_at DATETIME NOT NULL DEFAULT GETDATE(),
+      updated_at DATETIME NOT NULL DEFAULT GETDATE(),
+      CONSTRAINT book_id_fk FOREIGN KEY (book_id) REFERENCES book (book_id),
+      CONSTRAINT borrower_id_fk FOREIGN KEY (borrower_id) REFERENCES borrower (borrower_id),
 );
+END;
 
 GO
