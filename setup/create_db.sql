@@ -1,3 +1,12 @@
-CREATE DATABASE library_management_system;
-GO
-USE library_management_system;
+IF NOT EXISTS
+    (
+        SELECT
+            name
+        FROM
+            sys.sysdatabases
+        WHERE
+            name = 'library_management_system'
+    )
+BEGIN
+    CREATE DATABASE library_management_system
+END;
