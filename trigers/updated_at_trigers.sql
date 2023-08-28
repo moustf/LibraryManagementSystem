@@ -10,6 +10,8 @@ BEGIN
     INNER JOIN inserted AS i ON b.book_id = i.book_id
 END;
 
+GO
+
 -- Creating a trigger to update the updated_At field in the borrower table automatically.
 CREATE TRIGGER update_borrower_updated_at
 ON borrower
@@ -22,6 +24,8 @@ BEGIN
     INNER JOIN inserted AS i On b.borrower_id = i.borrower_id
 END;
 
+GO
+
 -- Creating a trigger to update the updated_At field in the borrower table automatically.
 CREATE TRIGGER update_loan_updated_at
 ON loan
@@ -33,3 +37,5 @@ BEGIN
     FROM loan AS l
     INNER JOIN inserted AS i On l.loan_id = i.loan_id
 END;
+
+GO
