@@ -11,6 +11,8 @@ CREATE TABLE book (
     updated_at DATETIME DEFAULT GETDATE(),
 );
 
+GO
+
 CREATE TABLE borrower (
   borrower_id INT PRIMARY KEY IDENTITY (1, 1),
   first_name NVARCHAR(20) NOT NULL,
@@ -22,6 +24,7 @@ CREATE TABLE borrower (
   updated_at DATETIME DEFAULT GETDATE(),
 );
 
+GO
 
 CREATE TABLE loan (
   loan_id INT PRIMARY KEY IDENTITY (1, 1),
@@ -35,3 +38,5 @@ CREATE TABLE loan (
   CONSTRAINT book_id_fk FOREIGN KEY (book_id) REFERENCES book (book_id),
   CONSTRAINT borrower_id_fk FOREIGN KEY (borrower_id) REFERENCES borrower (borrower_id),
 );
+
+GO
