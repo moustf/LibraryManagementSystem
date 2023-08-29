@@ -1,4 +1,4 @@
-CREATE PROCEDURE popular_genre_for_given_month (
+CREATE PROCEDURE sp_PopularGenreForAGivenMonth(
     @month INT
 )
 AS
@@ -14,4 +14,4 @@ BEGIN
     ORDER BY Count DESC;
 END ;
 
-EXEC popular_genre_for_given_month 12;
+    EXEC sp_PopularGenreForAGivenMonth 5;
