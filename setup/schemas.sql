@@ -14,7 +14,7 @@ IF NOT EXISTS
             isbn           NVARCHAR(17)               NOT NULL,
             genre          NVARCHAR(50)               NOT NULL,
             shelf_location NVARCHAR(100)              NOT NULL,
-            is_available   BIT      DEFAULT 0         NOT NULL,
+            is_available   BIT      DEFAULT 1         NOT NULL,
             created_at     DATETIME DEFAULT GETDATE() NOT NULL,
             updated_at     DATETIME DEFAULT GETDATE() NOT NULL,
             CONSTRAINT CHK_GenreEnum CHECK (genre IN (
