@@ -70,3 +70,20 @@ IF NOT EXISTS
     END;
 
 GO
+
+IF NOT EXISTS
+    (SELECT 1
+     FROM INFORMATION_SCHEMA.TABLES
+     WHERE TABLE_SCHEMA = 'dbo'
+       AND TABLE_NAME = 'audit_log')
+    BEGIN
+        CREATE TABLE audit_log
+        (
+            id                INT PRIMARY KEY IDENTITY (1, 1),
+            book_id           INT      NOT NULL,
+            status_changed_to BIT      NOT NULL,
+            change_date       DATETIME NOT NULL DEFAULT GETDATE(),
+        );
+    END;
+
+GO
