@@ -79,7 +79,7 @@ IF NOT EXISTS
     BEGIN
         CREATE TABLE audit_log
         (
-            id                INT PRIMARY KEY IDENTITY (1, 1),
+            audit_log_id      INT PRIMARY KEY IDENTITY (1, 1),
             book_id           INT      NOT NULL,
             status_changed_to BIT      NOT NULL,
             change_date       DATETIME NOT NULL DEFAULT GETDATE(),
@@ -87,3 +87,20 @@ IF NOT EXISTS
     END;
 
 GO
+
+-- Creating a table for capturing the details of the errors occur in the transactions
+IF NOT EXISTS
+    (SELECT 1
+     FROM INFORMATION_SCHEMA.TABLES
+     WHERE TABLE_SCHEMA = 'dbo'
+       AND TABLE_NAME = 'error_log')
+    BEGIN
+        CREATE TABLE error_log
+        (
+            error_log_id   INT PRIMARY KEY IDENTITY (1, 1),
+            error_message  NVARCHAR(4000),
+            error_severity INT,
+            error_state    INT,
+            logged_at      DATETIME,
+        );
+    END;
