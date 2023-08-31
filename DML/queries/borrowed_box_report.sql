@@ -1,26 +1,60 @@
-IF NOT EXISTS
-    (SELECT 1
-     FROM sys.procedures
-     WHERE name = 'sp_BorrowedBooksReport')
-    BEGIN
-        EXEC('CREATE PROCEDURE sp_BorrowedBooksReport(
-            @start_date NVARCHAR(10), @end_date NVARCHAR(10)
+USE library_management_system;
+
+GO
+
+IF NOT EXISTS(
+    SELECT
+        1
+    FROM
+        sys.procedures
+    WHERE
+        name = 'sp_BorrowedBooksReport'
+)
+BEGIN
+    DECLARE @dynamic_sql NVARCHAR(MAX);
+    SET @dynamic_sql = '
+        CREATE PROCEDURE sp_BorrowedBooksReport(
+            @start_date DATETIME,
+            @end_date DATETIME
         )
         AS
         BEGIN
-            SELECT b.borrower_id                         AS [Borrower Id],
-                   first_name                            AS [First Name],
-                   last_name                             AS [Last Name],
-                   membership_date                          [Membership Date],
-                   CONVERT(NVARCHAR, date_borrowed, 101) AS [Date Borrowed],
-                   date_returned                         AS [Date Returned]
-            FROM borrower AS b
-                     INNER JOIN
-                 loan AS l
-                 ON b.borrower_id = l.borrower_id
-            WHERE l.date_borrowed >= @start_date
-              AND l.date_borrowed < @end_date;
-        END;');
-    END;
+            BEGIN TRY
+                SELECT b.borrower_id,
+                       first_name,
+                       last_name,
+                       membership_date,
+                       CONVERT(NVARCHAR, date_borrowed, 101) AS date_borrowed,
+                       date_returned
+                FROM
+                    borrower AS b
+                INNER JOIN
+                     loan AS l
+                ON b.borrower_id = l.borrower_id
+                WHERE
+                    l.date_borrowed >= @start_date
+                AND
+                    l.date_borrowed < @end_date;
+            END TRY
+            BEGIN CATCH
+                DECLARE @error_message NVARCHAR(4000),
+                        @error_severity INT,
+                        @error_state INT;
 
-EXEC sp_BorrowedBooksReport '7/12/2023', '10/12/2023';
+                SELECT @error_message = ERROR_MESSAGE(),
+                       @error_severity = ERROR_SEVERITY(),
+                       @error_state = ERROR_STATE();
+
+                INSERT INTO error_log (error_message, error_severity, error_state, logged_at)
+                VALUES (@error_message, @error_severity, @error_state, GETDATE());
+            END CATCH;
+        END;
+    ';
+
+    EXEC sp_executesql @dynamic_sql;
+END;
+
+DECLARE @start_date DATETIME = CONVERT(DATETIME, '7/12/2023', 101),
+    @end_date DATETIME = CONVERT(DATETIME, '10/12/2023', 101);
+
+EXEC sp_BorrowedBooksReport @start_date, @end_date;

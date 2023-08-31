@@ -1,11 +1,18 @@
+USE library_management_system;
+
+GO
+
 SELECT
-    author AS Author,
-    loan.book_id AS [Book Id],
-    COUNT(loan.book_id) AS [Borrowing Count],
-    DENSE_RANK() OVER(ORDER BY COUNT(loan.book_id) DESC) AS Rank
+    author,
+    l.book_id,
+    COUNT(l.book_id) AS borrowing_count,
+    DENSE_RANK() OVER(ORDER BY COUNT(l.book_id) DESC) AS rank
 FROM
-    book
+    book AS b
 INNER JOIN
-    loan
-ON book.book_id = loan.book_id
-GROUP BY loan.book_id, author;
+    loan AS l
+ON b.book_id = l.book_id
+GROUP BY
+    l.book_id, author
+ORDER BY
+    borrowing_count, rank DESC;

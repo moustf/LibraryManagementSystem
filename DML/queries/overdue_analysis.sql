@@ -1,21 +1,27 @@
+USE library_management_system;
+
+GO
+
 SELECT
-    book.book_id AS [Book ID],
-    title AS Title,
-    author AS Author,
-    isbn AS ISBN,
-    genre AS Genre,
-    is_available AS [Is Available],
-    borrower.borrower_id AS [Borrower Id],
-    first_name AS [First Name],
-    last_name AS [Last Name],
-    email AS Email,
-    CONVERT(VARCHAR, membership_date, 101) AS [Membership Date],
-    DATEDIFF(DAY, due_date, GETDATE()) AS OverdueDays
+    bo.book_id,
+    title,
+    author,
+    isbn,
+    genre,
+    is_available,
+    br.borrower_id,
+    first_name,
+    last_name,
+    email,
+    CONVERT(VARCHAR, membership_date, 101) AS membership_date,
+    DATEDIFF(DAY, due_date, GETDATE()) AS overdue_days
 FROM
-    loan
-INNER JOIN book
-ON loan.book_id = book.book_id
-INNER JOIN borrower
-ON loan.borrower_id = borrower.borrower_id
+    loan AS l
+INNER JOIN
+    book AS bo
+ON l.book_id = bo.book_id
+INNER JOIN
+    borrower AS br
+ON l.borrower_id = br.borrower_id
 WHERE
     DATEDIFF(DAY, due_date, GETDATE()) > 30;
