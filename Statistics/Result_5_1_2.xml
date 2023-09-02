@@ -1,0 +1,1284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+    <row>
+        <Microsoft_SQL_Server_2005_XML_Showplan>
+            <ShowPlanXML xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan" Version="1.564"
+                         Build="16.0.950.9">
+                <BatchSequence>
+                    <Batch>
+                        <Statements>
+                            <StmtSimple
+                                    SetatementText="WITH AgeGenre AS (&#xa;    SELECT&#xa;        CASE&#xa;            WHEN DATEDIFF(YEAR, date_of_birth, GETDATE()) BETWEEN 0 AND 10 THEN &apos;0 - 10&apos;&#xa;            WHEN DATEDIFF(YEAR, date_of_birth, GETDATE()) BETWEEN 11 AND 20 THEN &apos;11 - 20&apos;&#xa;            WHEN DATEDIFF(YEAR, date_of_birth, GETDATE()) BETWEEN 21 AND 30 THEN &apos;21 - 30&apos;&#xa;            WHEN DATEDIFF(YEAR, date_of_birth, GETDATE()) BETWEEN 31 AND 40 THEN &apos;31 - 40&apos;&#xa;            WHEN DATEDIFF(YEAR, date_of_birth, GETDATE()) BETWEEN 41 AND 50 THEN &apos;41 - 50&apos;&#xa;            ELSE &apos;Over 50&apos;&#xa;        END AS age,&#xa;        genre,&#xa;        COUNT(*) AS genre_count&#xa;    FROM&#xa;        borrower AS br&#xa;    INNER JOIN&#xa;        loan AS l&#xa;    ON br.borrower_id = l.borrower_id&#xa;    INNER JOIN&#xa;        book AS bo&#xa;    ON l.book_id = bo.book_id&#xa;    GROUP BY&#xa;        date_of_birth, genre&#xa;),&#xa;RankedAgeGenre AS (&#xa;    SELECT&#xa;        age AS age_range,&#xa;        genre AS preferred_genere,&#xa;        genre_count,&#xa;        ROW_NUMBER() OVER (PARTITION BY age ORDER BY genre_count DESC) AS row_num&#xa;    FROM&#xa;        AgeGenre&#xa;)&#xa;SELECT&#xa;    age_range,&#xa;   preferred_genere,&#xa;   genre_count,&#xa;   row_num&#xa;FROM&#xa;    RankedAgeGenre&#xa;WHERE&#xa;    row_num = 1&#xa;ORDER BY&#xa;    age_range"
+                                    StatementId="1" StatementCompId="1" StatementType="SELECT"
+                                    StatementSqlHandle="0x090059B04CA020B017AAC3AB5D329AC18ACE0000000000000000000000000000000000000000000000000000"
+                                    DatabaseContextSettingsId="2" ParentObjectId="0" StatementParameterizationType="0"
+                                    RetrievedFromCache="true" StatementSubTreeCost="0.191965" StatementEstRows="1001.57"
+                                    SecurityPolicyApplied="false" StatementOptmLevel="FULL"
+                                    QueryHash="0x8B38FF5A012A05BA" QueryPlanHash="0xE1090BDB124526D5"
+                                    StatementOptmEarlyAbortReason="TimeOut" CardinalityEstimationModelVersion="160">
+                                <StatementSetOptions QUOTED_IDENTIFIER="true" ARITHABORT="false"
+                                                     CONCAT_NULL_YIELDS_NULL="true" ANSI_NULLS="true"
+                                                     ANSI_PADDING="true" ANSI_WARNINGS="true"
+                                                     NUMERIC_ROUNDABORT="false"/>
+                                <QueryPlan DegreeOfParallelism="1" MemoryGrant="2736" CachedPlanSize="120"
+                                           CompileTime="20" CompileCPU="20" CompileMemory="1144">
+                                    <MemoryGrantInfo SerialRequiredMemory="2048" SerialDesiredMemory="2736"
+                                                     RequiredMemory="2048" DesiredMemory="2736" RequestedMemory="2736"
+                                                     GrantWaitTime="0" MaxQueryMemory="1374840" GrantedMemory="2736"
+                                                     MaxUsedMemory="1296" LastRequestedMemory="2736"
+                                                     IsMemoryGrantFeedbackAdjusted="No: Accurate Grant"/>
+                                    <OptimizerHardwareDependentProperties EstimatedAvailableMemoryGrant="325324"
+                                                                          EstimatedPagesCached="81331"
+                                                                          EstimatedAvailableDegreeOfParallelism="2"
+                                                                          MaxCompileMemory="5197992"/>
+                                    <OptimizerStatsUsage>
+                                        <StatisticsInfo LastUpdate="2023-08-29T11:43:00.80" ModificationCount="0"
+                                                        SamplingPercent="100" Statistics="[PK__book__490D1AE10EFE8A9F]"
+                                                        Table="[book]" Schema="[dbo]"
+                                                        Database="[library_management_system]"/>
+                                        <StatisticsInfo LastUpdate="2023-08-29T16:09:06.78" ModificationCount="0"
+                                                        SamplingPercent="100" Statistics="[_WA_Sys_00000005_7EF6D905]"
+                                                        Table="[book]" Schema="[dbo]"
+                                                        Database="[library_management_system]"/>
+                                        <StatisticsInfo LastUpdate="2023-08-29T17:14:07.85" ModificationCount="3"
+                                                        SamplingPercent="100"
+                                                        Statistics="[UQ__borrower__AB6E6164A863FC67]" Table="[borrower]"
+                                                        Schema="[dbo]"
+                                                        Database="[library_management_system]"/>
+                                        <StatisticsInfo LastUpdate="2023-08-29T20:58:22.66" ModificationCount="0"
+                                                        SamplingPercent="100" Statistics="[_WA_Sys_00000002_0A688BB1]"
+                                                        Table="[loan]" Schema="[dbo]"
+                                                        Database="[library_management_system]"/>
+                                        <StatisticsInfo LastUpdate="2023-08-29T20:58:22.67" ModificationCount="0"
+                                                        SamplingPercent="100" Statistics="[_WA_Sys_00000003_0A688BB1]"
+                                                        Table="[loan]" Schema="[dbo]"
+                                                        Database="[library_management_system]"/>
+                                        <StatisticsInfo LastUpdate="2023-08-29T11:43:00.80" ModificationCount="3"
+                                                        SamplingPercent="100"
+                                                        Statistics="[PK__borrower__FCA592693718EE88]" Table="[borrower]"
+                                                        Schema="[dbo]"
+                                                        Database="[library_management_system]"/>
+                                        <StatisticsInfo LastUpdate="2023-08-29T22:52:16.27" ModificationCount="1"
+                                                        SamplingPercent="100" Statistics="[_WA_Sys_00000005_04AFB25B]"
+                                                        Table="[borrower]" Schema="[dbo]"
+                                                        Database="[library_management_system]"/>
+                                    </OptimizerStatsUsage>
+                                    <QueryTimeStats ElapsedTime="36" CpuTime="36"/>
+                                    <RelOp NodeId="0" PhysicalOp="Filter" LogicalOp="Filter" EstimateRows="1001.57"
+                                           EstimateIO="0" EstimateCPU="0.000480755" AvgRowSize="41"
+                                           EstimatedTotalSubtreeCost="0.191965" Parallel="0" EstimateRebinds="0"
+                                           EstimateRewinds="0" EstimatedExecutionMode="Row">
+                                        <OutputList>
+                                            <ColumnReference Database="[library_management_system]" Schema="[dbo]"
+                                                             Table="[book]" Alias="[bo]"
+                                                             Column="genre"/>
+                                            <ColumnReference Column="Expr1003"/>
+                                            <ColumnReference Column="Expr1004"/>
+                                            <ColumnReference Column="Expr1005"/>
+                                        </OutputList>
+                                        <RunTimeInformation>
+                                            <RunTimeCountersPerThread Thread="0" ActualRows="6" Batches="0"
+                                                                      ActualElapsedms="12" ActualCPUms="12"
+                                                                      ActualEndOfScans="1" ActualExecutions="1"
+                                                                      ActualExecutionMode="Row"/>
+                                        </RunTimeInformation>
+                                        <Filter StartupExpression="0">
+                                            <RelOp NodeId="1" PhysicalOp="Sequence Project" LogicalOp="Compute Scalar"
+                                                   EstimateRows="1001.57" EstimateIO="0" EstimateCPU="8.01258e-05"
+                                                   AvgRowSize="41" EstimatedTotalSubtreeCost="0.191485" Parallel="0"
+                                                   EstimateRebinds="0" EstimateRewinds="0" EstimatedExecutionMode="Row">
+                                                <OutputList>
+                                                    <ColumnReference Database="[library_management_system]"
+                                                                     Schema="[dbo]" Table="[book]" Alias="[bo]"
+                                                                     Column="genre"/>
+                                                    <ColumnReference Column="Expr1003"/>
+                                                    <ColumnReference Column="Expr1004"/>
+                                                    <ColumnReference Column="Expr1005"/>
+                                                </OutputList>
+                                                <RunTimeInformation>
+                                                    <RunTimeCountersPerThread Thread="0" ActualRows="988" Batches="0"
+                                                                              ActualElapsedms="12" ActualCPUms="12"
+                                                                              ActualEndOfScans="1" ActualExecutions="1"
+                                                                              ActualExecutionMode="Row"/>
+                                                </RunTimeInformation>
+                                                <SequenceProject>
+                                                    <DefinedValues>
+                                                        <DefinedValue>
+                                                            <ColumnReference Column="Expr1005"/>
+                                                            <ScalarOperator ScalarString="row_number">
+                                                                <Sequence FunctionName="row_number"/>
+                                                            </ScalarOperator>
+                                                        </DefinedValue>
+                                                    </DefinedValues>
+                                                    <RelOp NodeId="2" PhysicalOp="Segment" LogicalOp="Segment"
+                                                           EstimateRows="1001.57" EstimateIO="0"
+                                                           EstimateCPU="2.00315e-05" AvgRowSize="41"
+                                                           EstimatedTotalSubtreeCost="0.191404" Parallel="0"
+                                                           EstimateRebinds="0" EstimateRewinds="0"
+                                                           EstimatedExecutionMode="Row">
+                                                        <OutputList>
+                                                            <ColumnReference Database="[library_management_system]"
+                                                                             Schema="[dbo]" Table="[book]" Alias="[bo]"
+                                                                             Column="genre"/>
+                                                            <ColumnReference Column="Expr1003"/>
+                                                            <ColumnReference Column="Expr1004"/>
+                                                            <ColumnReference Column="Segment1017"/>
+                                                        </OutputList>
+                                                        <RunTimeInformation>
+                                                            <RunTimeCountersPerThread Thread="0" ActualRows="988"
+                                                                                      Batches="0" ActualElapsedms="11"
+                                                                                      ActualCPUms="11"
+                                                                                      ActualEndOfScans="1"
+                                                                                      ActualExecutions="1"
+                                                                                      ActualExecutionMode="Row"/>
+                                                        </RunTimeInformation>
+                                                        <Segment>
+                                                            <GroupBy>
+                                                                <ColumnReference Column="Expr1004"/>
+                                                            </GroupBy>
+                                                            <SegmentColumn>
+                                                                <ColumnReference Column="Segment1017"/>
+                                                            </SegmentColumn>
+                                                            <RelOp NodeId="3" PhysicalOp="Sort" LogicalOp="Sort"
+                                                                   EstimateRows="1001.57" EstimateIO="0.0112613"
+                                                                   EstimateCPU="0.0156746" AvgRowSize="33"
+                                                                   EstimatedTotalSubtreeCost="0.191384" Parallel="0"
+                                                                   EstimateRebinds="0" EstimateRewinds="0"
+                                                                   EstimatedExecutionMode="Row">
+                                                                <OutputList>
+                                                                    <ColumnReference
+                                                                            Database="[library_management_system]"
+                                                                            Schema="[dbo]" Table="[book]" Alias="[bo]"
+                                                                            Column="genre"/>
+                                                                    <ColumnReference
+                                                                            Column="Expr1003"/>
+                                                                    <ColumnReference
+                                                                            Column="Expr1004"/>
+                                                                </OutputList>
+                                                                <MemoryFractions Input="0.526316"
+                                                                                 Output="1"/>
+                                                                <RunTimeInformation>
+                                                                    <RunTimeCountersPerThread Thread="0"
+                                                                                              ActualRows="988"
+                                                                                              Batches="0"
+                                                                                              ActualElapsedms="11"
+                                                                                              ActualCPUms="11"
+                                                                                              ActualScans="0"
+                                                                                              ActualLogicalReads="0"
+                                                                                              ActualPhysicalReads="0"
+                                                                                              ActualReadAheads="0"
+                                                                                              ActualLobLogicalReads="0"
+                                                                                              ActualLobPhysicalReads="0"
+                                                                                              ActualLobReadAheads="0"
+                                                                                              ActualRebinds="1"
+                                                                                              ActualRewinds="0"
+                                                                                              ActualEndOfScans="1"
+                                                                                              ActualExecutions="1"
+                                                                                              InputMemoryGrant="872"
+                                                                                              OutputMemoryGrant="816"
+                                                                                              UsedMemoryGrant="80"
+                                                                                              ActualExecutionMode="Row"/>
+                                                                </RunTimeInformation>
+                                                                <Sort Distinct="0">
+                                                                    <OrderBy>
+                                                                        <OrderByColumn Ascending="1">
+                                                                            <ColumnReference
+                                                                                    Column="Expr1004"/>
+                                                                        </OrderByColumn>
+                                                                        <OrderByColumn Ascending="0">
+                                                                            <ColumnReference
+                                                                                    Column="Expr1003"/>
+                                                                        </OrderByColumn>
+                                                                    </OrderBy>
+                                                                    <RelOp NodeId="4" PhysicalOp="Compute Scalar"
+                                                                           LogicalOp="Compute Scalar"
+                                                                           EstimateRows="1001.57" EstimateIO="0"
+                                                                           EstimateCPU="0.000100157" AvgRowSize="33"
+                                                                           EstimatedTotalSubtreeCost="0.164448"
+                                                                           Parallel="0" EstimateRebinds="0"
+                                                                           EstimateRewinds="0"
+                                                                           EstimatedExecutionMode="Row">
+                                                                        <OutputList>
+                                                                            <ColumnReference
+                                                                                    Database="[library_management_system]"
+                                                                                    Schema="[dbo]" Table="[book]"
+                                                                                    Alias="[bo]"
+                                                                                    Column="genre"/>
+                                                                            <ColumnReference
+                                                                                    Column="Expr1003"/>
+                                                                            <ColumnReference
+                                                                                    Column="Expr1004"/>
+                                                                        </OutputList>
+                                                                        <ComputeScalar>
+                                                                            <DefinedValues>
+                                                                                <DefinedValue>
+                                                                                    <ColumnReference
+                                                                                            Column="Expr1004"/>
+                                                                                    <ScalarOperator
+                                                                                            ScalarString="CASE WHEN datediff(year,[library_management_system].[dbo].[borrower].[date_of_birth] as [br].[date_of_birth],getdate())&gt;=(0) AND datediff(year,[library_management_system].[dbo].[borrower].[date_of_birth] as [br].[date_of_birth],getdate())&lt;=(10) THEN &apos;0 - 10&apos; ELSE CASE WHEN datediff(year,[library_management_system].[dbo].[borrower].[date_of_birth] as [br].[date_of_birth],getdate())&gt;=(11) AND datediff(year,[library_management_system].[dbo].[borrower].[date_of_birth] as [br].[date_of_birth],getdate())&lt;=(20) THEN &apos;11 - 20&apos; ELSE CASE WHEN datediff(year,[library_management_system].[dbo].[borrower].[date_of_birth] as [br].[date_of_birth],getdate())&gt;=(21) AND datediff(year,[library_management_system].[dbo].[borrower].[date_of_birth] as [br].[date_of_birth],getdate())&lt;=(30) THEN &apos;21 - 30&apos; ELSE CASE WHEN datediff(year,[library_management_system].[dbo].[borrower].[date_of_birth] as [br].[date_of_birth],getdate())&gt;=(31) AND datediff(year,[library_management_system].[dbo].[borrower].[date_of_birth] as [br].[date_of_birth],getdate())&lt;=(40) THEN &apos;31 - 40&apos; ELSE CASE WHEN datediff(year,[library_management_system].[dbo].[borrower].[date_of_birth] as [br].[date_of_birth],getdate())&gt;=(41) AND datediff(year,[library_management_system].[dbo].[borrower].[date_of_birth] as [br].[date_of_birth],getdate())&lt;=(50) THEN &apos;41 - 50&apos; ELSE &apos;Over 50&apos; END END END END END">
+                                                                                        <IF>
+                                                                                            <Condition>
+                                                                                                <ScalarOperator>
+                                                                                                    <Logical
+                                                                                                            Operation="AND">
+                                                                                                        <ScalarOperator>
+                                                                                                            <Compare
+                                                                                                                    CompareOp="GE">
+                                                                                                                <ScalarOperator>
+                                                                                                                    <Intrinsic
+                                                                                                                            FunctionName="datediff">
+                                                                                                                        <ScalarOperator>
+                                                                                                                            <Const ConstValue="(0)"/>
+                                                                                                                        </ScalarOperator>
+                                                                                                                        <ScalarOperator>
+                                                                                                                            <Identifier>
+                                                                                                                                <ColumnReference
+                                                                                                                                        Database="[library_management_system]"
+                                                                                                                                        Schema="[dbo]"
+                                                                                                                                        Table="[borrower]"
+                                                                                                                                        Alias="[br]"
+                                                                                                                                        Column="date_of_birth"/>
+                                                                                                                            </Identifier>
+                                                                                                                        </ScalarOperator>
+                                                                                                                        <ScalarOperator>
+                                                                                                                            <Identifier>
+                                                                                                                                <ColumnReference
+                                                                                                                                        Column="ConstExpr1006">
+                                                                                                                                    <ScalarOperator>
+                                                                                                                                        <Intrinsic
+                                                                                                                                                FunctionName="getdate"/>
+                                                                                                                                    </ScalarOperator>
+                                                                                                                                </ColumnReference>
+                                                                                                                            </Identifier>
+                                                                                                                        </ScalarOperator>
+                                                                                                                    </Intrinsic>
+                                                                                                                </ScalarOperator>
+                                                                                                                <ScalarOperator>
+                                                                                                                    <Const ConstValue="(0)"/>
+                                                                                                                </ScalarOperator>
+                                                                                                            </Compare>
+                                                                                                        </ScalarOperator>
+                                                                                                        <ScalarOperator>
+                                                                                                            <Compare
+                                                                                                                    CompareOp="LE">
+                                                                                                                <ScalarOperator>
+                                                                                                                    <Intrinsic
+                                                                                                                            FunctionName="datediff">
+                                                                                                                        <ScalarOperator>
+                                                                                                                            <Const ConstValue="(0)"/>
+                                                                                                                        </ScalarOperator>
+                                                                                                                        <ScalarOperator>
+                                                                                                                            <Identifier>
+                                                                                                                                <ColumnReference
+                                                                                                                                        Database="[library_management_system]"
+                                                                                                                                        Schema="[dbo]"
+                                                                                                                                        Table="[borrower]"
+                                                                                                                                        Alias="[br]"
+                                                                                                                                        Column="date_of_birth"/>
+                                                                                                                            </Identifier>
+                                                                                                                        </ScalarOperator>
+                                                                                                                        <ScalarOperator>
+                                                                                                                            <Identifier>
+                                                                                                                                <ColumnReference
+                                                                                                                                        Column="ConstExpr1007">
+                                                                                                                                    <ScalarOperator>
+                                                                                                                                        <Intrinsic
+                                                                                                                                                FunctionName="getdate"/>
+                                                                                                                                    </ScalarOperator>
+                                                                                                                                </ColumnReference>
+                                                                                                                            </Identifier>
+                                                                                                                        </ScalarOperator>
+                                                                                                                    </Intrinsic>
+                                                                                                                </ScalarOperator>
+                                                                                                                <ScalarOperator>
+                                                                                                                    <Const ConstValue="(10)"/>
+                                                                                                                </ScalarOperator>
+                                                                                                            </Compare>
+                                                                                                        </ScalarOperator>
+                                                                                                    </Logical>
+                                                                                                </ScalarOperator>
+                                                                                            </Condition>
+                                                                                            <Then>
+                                                                                                <ScalarOperator>
+                                                                                                    <Const ConstValue="&apos;0 - 10&apos;"/>
+                                                                                                </ScalarOperator>
+                                                                                            </Then>
+                                                                                            <Else>
+                                                                                                <ScalarOperator>
+                                                                                                    <IF>
+                                                                                                        <Condition>
+                                                                                                            <ScalarOperator>
+                                                                                                                <Logical
+                                                                                                                        Operation="AND">
+                                                                                                                    <ScalarOperator>
+                                                                                                                        <Compare
+                                                                                                                                CompareOp="GE">
+                                                                                                                            <ScalarOperator>
+                                                                                                                                <Intrinsic
+                                                                                                                                        FunctionName="datediff">
+                                                                                                                                    <ScalarOperator>
+                                                                                                                                        <Const ConstValue="(0)"/>
+                                                                                                                                    </ScalarOperator>
+                                                                                                                                    <ScalarOperator>
+                                                                                                                                        <Identifier>
+                                                                                                                                            <ColumnReference
+                                                                                                                                                    Database="[library_management_system]"
+                                                                                                                                                    Schema="[dbo]"
+                                                                                                                                                    Table="[borrower]"
+                                                                                                                                                    Alias="[br]"
+                                                                                                                                                    Column="date_of_birth"/>
+                                                                                                                                        </Identifier>
+                                                                                                                                    </ScalarOperator>
+                                                                                                                                    <ScalarOperator>
+                                                                                                                                        <Identifier>
+                                                                                                                                            <ColumnReference
+                                                                                                                                                    Column="ConstExpr1008">
+                                                                                                                                                <ScalarOperator>
+                                                                                                                                                    <Intrinsic
+                                                                                                                                                            FunctionName="getdate"/>
+                                                                                                                                                </ScalarOperator>
+                                                                                                                                            </ColumnReference>
+                                                                                                                                        </Identifier>
+                                                                                                                                    </ScalarOperator>
+                                                                                                                                </Intrinsic>
+                                                                                                                            </ScalarOperator>
+                                                                                                                            <ScalarOperator>
+                                                                                                                                <Const ConstValue="(11)"/>
+                                                                                                                            </ScalarOperator>
+                                                                                                                        </Compare>
+                                                                                                                    </ScalarOperator>
+                                                                                                                    <ScalarOperator>
+                                                                                                                        <Compare
+                                                                                                                                CompareOp="LE">
+                                                                                                                            <ScalarOperator>
+                                                                                                                                <Intrinsic
+                                                                                                                                        FunctionName="datediff">
+                                                                                                                                    <ScalarOperator>
+                                                                                                                                        <Const ConstValue="(0)"/>
+                                                                                                                                    </ScalarOperator>
+                                                                                                                                    <ScalarOperator>
+                                                                                                                                        <Identifier>
+                                                                                                                                            <ColumnReference
+                                                                                                                                                    Database="[library_management_system]"
+                                                                                                                                                    Schema="[dbo]"
+                                                                                                                                                    Table="[borrower]"
+                                                                                                                                                    Alias="[br]"
+                                                                                                                                                    Column="date_of_birth"/>
+                                                                                                                                        </Identifier>
+                                                                                                                                    </ScalarOperator>
+                                                                                                                                    <ScalarOperator>
+                                                                                                                                        <Identifier>
+                                                                                                                                            <ColumnReference
+                                                                                                                                                    Column="ConstExpr1009">
+                                                                                                                                                <ScalarOperator>
+                                                                                                                                                    <Intrinsic
+                                                                                                                                                            FunctionName="getdate"/>
+                                                                                                                                                </ScalarOperator>
+                                                                                                                                            </ColumnReference>
+                                                                                                                                        </Identifier>
+                                                                                                                                    </ScalarOperator>
+                                                                                                                                </Intrinsic>
+                                                                                                                            </ScalarOperator>
+                                                                                                                            <ScalarOperator>
+                                                                                                                                <Const ConstValue="(20)"/>
+                                                                                                                            </ScalarOperator>
+                                                                                                                        </Compare>
+                                                                                                                    </ScalarOperator>
+                                                                                                                </Logical>
+                                                                                                            </ScalarOperator>
+                                                                                                        </Condition>
+                                                                                                        <Then>
+                                                                                                            <ScalarOperator>
+                                                                                                                <Const ConstValue="&apos;11 - 20&apos;"/>
+                                                                                                            </ScalarOperator>
+                                                                                                        </Then>
+                                                                                                        <Else>
+                                                                                                            <ScalarOperator>
+                                                                                                                <IF>
+                                                                                                                    <Condition>
+                                                                                                                        <ScalarOperator>
+                                                                                                                            <Logical
+                                                                                                                                    Operation="AND">
+                                                                                                                                <ScalarOperator>
+                                                                                                                                    <Compare
+                                                                                                                                            CompareOp="GE">
+                                                                                                                                        <ScalarOperator>
+                                                                                                                                            <Intrinsic
+                                                                                                                                                    FunctionName="datediff">
+                                                                                                                                                <ScalarOperator>
+                                                                                                                                                    <Const ConstValue="(0)"/>
+                                                                                                                                                </ScalarOperator>
+                                                                                                                                                <ScalarOperator>
+                                                                                                                                                    <Identifier>
+                                                                                                                                                        <ColumnReference
+                                                                                                                                                                Database="[library_management_system]"
+                                                                                                                                                                Schema="[dbo]"
+                                                                                                                                                                Table="[borrower]"
+                                                                                                                                                                Alias="[br]"
+                                                                                                                                                                Column="date_of_birth"/>
+                                                                                                                                                    </Identifier>
+                                                                                                                                                </ScalarOperator>
+                                                                                                                                                <ScalarOperator>
+                                                                                                                                                    <Identifier>
+                                                                                                                                                        <ColumnReference
+                                                                                                                                                                Column="ConstExpr1010">
+                                                                                                                                                            <ScalarOperator>
+                                                                                                                                                                <Intrinsic
+                                                                                                                                                                        FunctionName="getdate"/>
+                                                                                                                                                            </ScalarOperator>
+                                                                                                                                                        </ColumnReference>
+                                                                                                                                                    </Identifier>
+                                                                                                                                                </ScalarOperator>
+                                                                                                                                            </Intrinsic>
+                                                                                                                                        </ScalarOperator>
+                                                                                                                                        <ScalarOperator>
+                                                                                                                                            <Const ConstValue="(21)"/>
+                                                                                                                                        </ScalarOperator>
+                                                                                                                                    </Compare>
+                                                                                                                                </ScalarOperator>
+                                                                                                                                <ScalarOperator>
+                                                                                                                                    <Compare
+                                                                                                                                            CompareOp="LE">
+                                                                                                                                        <ScalarOperator>
+                                                                                                                                            <Intrinsic
+                                                                                                                                                    FunctionName="datediff">
+                                                                                                                                                <ScalarOperator>
+                                                                                                                                                    <Const ConstValue="(0)"/>
+                                                                                                                                                </ScalarOperator>
+                                                                                                                                                <ScalarOperator>
+                                                                                                                                                    <Identifier>
+                                                                                                                                                        <ColumnReference
+                                                                                                                                                                Database="[library_management_system]"
+                                                                                                                                                                Schema="[dbo]"
+                                                                                                                                                                Table="[borrower]"
+                                                                                                                                                                Alias="[br]"
+                                                                                                                                                                Column="date_of_birth"/>
+                                                                                                                                                    </Identifier>
+                                                                                                                                                </ScalarOperator>
+                                                                                                                                                <ScalarOperator>
+                                                                                                                                                    <Identifier>
+                                                                                                                                                        <ColumnReference
+                                                                                                                                                                Column="ConstExpr1011">
+                                                                                                                                                            <ScalarOperator>
+                                                                                                                                                                <Intrinsic
+                                                                                                                                                                        FunctionName="getdate"/>
+                                                                                                                                                            </ScalarOperator>
+                                                                                                                                                        </ColumnReference>
+                                                                                                                                                    </Identifier>
+                                                                                                                                                </ScalarOperator>
+                                                                                                                                            </Intrinsic>
+                                                                                                                                        </ScalarOperator>
+                                                                                                                                        <ScalarOperator>
+                                                                                                                                            <Const ConstValue="(30)"/>
+                                                                                                                                        </ScalarOperator>
+                                                                                                                                    </Compare>
+                                                                                                                                </ScalarOperator>
+                                                                                                                            </Logical>
+                                                                                                                        </ScalarOperator>
+                                                                                                                    </Condition>
+                                                                                                                    <Then>
+                                                                                                                        <ScalarOperator>
+                                                                                                                            <Const ConstValue="&apos;21 - 30&apos;"/>
+                                                                                                                        </ScalarOperator>
+                                                                                                                    </Then>
+                                                                                                                    <Else>
+                                                                                                                        <ScalarOperator>
+                                                                                                                            <IF>
+                                                                                                                                <Condition>
+                                                                                                                                    <ScalarOperator>
+                                                                                                                                        <Logical
+                                                                                                                                                Operation="AND">
+                                                                                                                                            <ScalarOperator>
+                                                                                                                                                <Compare
+                                                                                                                                                        CompareOp="GE">
+                                                                                                                                                    <ScalarOperator>
+                                                                                                                                                        <Intrinsic
+                                                                                                                                                                FunctionName="datediff">
+                                                                                                                                                            <ScalarOperator>
+                                                                                                                                                                <Const ConstValue="(0)"/>
+                                                                                                                                                            </ScalarOperator>
+                                                                                                                                                            <ScalarOperator>
+                                                                                                                                                                <Identifier>
+                                                                                                                                                                    <ColumnReference
+                                                                                                                                                                            Database="[library_management_system]"
+                                                                                                                                                                            Schema="[dbo]"
+                                                                                                                                                                            Table="[borrower]"
+                                                                                                                                                                            Alias="[br]"
+                                                                                                                                                                            Column="date_of_birth"/>
+                                                                                                                                                                </Identifier>
+                                                                                                                                                            </ScalarOperator>
+                                                                                                                                                            <ScalarOperator>
+                                                                                                                                                                <Identifier>
+                                                                                                                                                                    <ColumnReference
+                                                                                                                                                                            Column="ConstExpr1012">
+                                                                                                                                                                        <ScalarOperator>
+                                                                                                                                                                            <Intrinsic
+                                                                                                                                                                                    FunctionName="getdate"/>
+                                                                                                                                                                        </ScalarOperator>
+                                                                                                                                                                    </ColumnReference>
+                                                                                                                                                                </Identifier>
+                                                                                                                                                            </ScalarOperator>
+                                                                                                                                                        </Intrinsic>
+                                                                                                                                                    </ScalarOperator>
+                                                                                                                                                    <ScalarOperator>
+                                                                                                                                                        <Const ConstValue="(31)"/>
+                                                                                                                                                    </ScalarOperator>
+                                                                                                                                                </Compare>
+                                                                                                                                            </ScalarOperator>
+                                                                                                                                            <ScalarOperator>
+                                                                                                                                                <Compare
+                                                                                                                                                        CompareOp="LE">
+                                                                                                                                                    <ScalarOperator>
+                                                                                                                                                        <Intrinsic
+                                                                                                                                                                FunctionName="datediff">
+                                                                                                                                                            <ScalarOperator>
+                                                                                                                                                                <Const ConstValue="(0)"/>
+                                                                                                                                                            </ScalarOperator>
+                                                                                                                                                            <ScalarOperator>
+                                                                                                                                                                <Identifier>
+                                                                                                                                                                    <ColumnReference
+                                                                                                                                                                            Database="[library_management_system]"
+                                                                                                                                                                            Schema="[dbo]"
+                                                                                                                                                                            Table="[borrower]"
+                                                                                                                                                                            Alias="[br]"
+                                                                                                                                                                            Column="date_of_birth"/>
+                                                                                                                                                                </Identifier>
+                                                                                                                                                            </ScalarOperator>
+                                                                                                                                                            <ScalarOperator>
+                                                                                                                                                                <Identifier>
+                                                                                                                                                                    <ColumnReference
+                                                                                                                                                                            Column="ConstExpr1013">
+                                                                                                                                                                        <ScalarOperator>
+                                                                                                                                                                            <Intrinsic
+                                                                                                                                                                                    FunctionName="getdate"/>
+                                                                                                                                                                        </ScalarOperator>
+                                                                                                                                                                    </ColumnReference>
+                                                                                                                                                                </Identifier>
+                                                                                                                                                            </ScalarOperator>
+                                                                                                                                                        </Intrinsic>
+                                                                                                                                                    </ScalarOperator>
+                                                                                                                                                    <ScalarOperator>
+                                                                                                                                                        <Const ConstValue="(40)"/>
+                                                                                                                                                    </ScalarOperator>
+                                                                                                                                                </Compare>
+                                                                                                                                            </ScalarOperator>
+                                                                                                                                        </Logical>
+                                                                                                                                    </ScalarOperator>
+                                                                                                                                </Condition>
+                                                                                                                                <Then>
+                                                                                                                                    <ScalarOperator>
+                                                                                                                                        <Const ConstValue="&apos;31 - 40&apos;"/>
+                                                                                                                                    </ScalarOperator>
+                                                                                                                                </Then>
+                                                                                                                                <Else>
+                                                                                                                                    <ScalarOperator>
+                                                                                                                                        <IF>
+                                                                                                                                            <Condition>
+                                                                                                                                                <ScalarOperator>
+                                                                                                                                                    <Logical
+                                                                                                                                                            Operation="AND">
+                                                                                                                                                        <ScalarOperator>
+                                                                                                                                                            <Compare
+                                                                                                                                                                    CompareOp="GE">
+                                                                                                                                                                <ScalarOperator>
+                                                                                                                                                                    <Intrinsic
+                                                                                                                                                                            FunctionName="datediff">
+                                                                                                                                                                        <ScalarOperator>
+                                                                                                                                                                            <Const ConstValue="(0)"/>
+                                                                                                                                                                        </ScalarOperator>
+                                                                                                                                                                        <ScalarOperator>
+                                                                                                                                                                            <Identifier>
+                                                                                                                                                                                <ColumnReference
+                                                                                                                                                                                        Database="[library_management_system]"
+                                                                                                                                                                                        Schema="[dbo]"
+                                                                                                                                                                                        Table="[borrower]"
+                                                                                                                                                                                        Alias="[br]"
+                                                                                                                                                                                        Column="date_of_birth"/>
+                                                                                                                                                                            </Identifier>
+                                                                                                                                                                        </ScalarOperator>
+                                                                                                                                                                        <ScalarOperator>
+                                                                                                                                                                            <Identifier>
+                                                                                                                                                                                <ColumnReference
+                                                                                                                                                                                        Column="ConstExpr1014">
+                                                                                                                                                                                    <ScalarOperator>
+                                                                                                                                                                                        <Intrinsic
+                                                                                                                                                                                                FunctionName="getdate"/>
+                                                                                                                                                                                    </ScalarOperator>
+                                                                                                                                                                                </ColumnReference>
+                                                                                                                                                                            </Identifier>
+                                                                                                                                                                        </ScalarOperator>
+                                                                                                                                                                    </Intrinsic>
+                                                                                                                                                                </ScalarOperator>
+                                                                                                                                                                <ScalarOperator>
+                                                                                                                                                                    <Const ConstValue="(41)"/>
+                                                                                                                                                                </ScalarOperator>
+                                                                                                                                                            </Compare>
+                                                                                                                                                        </ScalarOperator>
+                                                                                                                                                        <ScalarOperator>
+                                                                                                                                                            <Compare
+                                                                                                                                                                    CompareOp="LE">
+                                                                                                                                                                <ScalarOperator>
+                                                                                                                                                                    <Intrinsic
+                                                                                                                                                                            FunctionName="datediff">
+                                                                                                                                                                        <ScalarOperator>
+                                                                                                                                                                            <Const ConstValue="(0)"/>
+                                                                                                                                                                        </ScalarOperator>
+                                                                                                                                                                        <ScalarOperator>
+                                                                                                                                                                            <Identifier>
+                                                                                                                                                                                <ColumnReference
+                                                                                                                                                                                        Database="[library_management_system]"
+                                                                                                                                                                                        Schema="[dbo]"
+                                                                                                                                                                                        Table="[borrower]"
+                                                                                                                                                                                        Alias="[br]"
+                                                                                                                                                                                        Column="date_of_birth"/>
+                                                                                                                                                                            </Identifier>
+                                                                                                                                                                        </ScalarOperator>
+                                                                                                                                                                        <ScalarOperator>
+                                                                                                                                                                            <Identifier>
+                                                                                                                                                                                <ColumnReference
+                                                                                                                                                                                        Column="ConstExpr1015">
+                                                                                                                                                                                    <ScalarOperator>
+                                                                                                                                                                                        <Intrinsic
+                                                                                                                                                                                                FunctionName="getdate"/>
+                                                                                                                                                                                    </ScalarOperator>
+                                                                                                                                                                                </ColumnReference>
+                                                                                                                                                                            </Identifier>
+                                                                                                                                                                        </ScalarOperator>
+                                                                                                                                                                    </Intrinsic>
+                                                                                                                                                                </ScalarOperator>
+                                                                                                                                                                <ScalarOperator>
+                                                                                                                                                                    <Const ConstValue="(50)"/>
+                                                                                                                                                                </ScalarOperator>
+                                                                                                                                                            </Compare>
+                                                                                                                                                        </ScalarOperator>
+                                                                                                                                                    </Logical>
+                                                                                                                                                </ScalarOperator>
+                                                                                                                                            </Condition>
+                                                                                                                                            <Then>
+                                                                                                                                                <ScalarOperator>
+                                                                                                                                                    <Const ConstValue="&apos;41 - 50&apos;"/>
+                                                                                                                                                </ScalarOperator>
+                                                                                                                                            </Then>
+                                                                                                                                            <Else>
+                                                                                                                                                <ScalarOperator>
+                                                                                                                                                    <Const ConstValue="&apos;Over 50&apos;"/>
+                                                                                                                                                </ScalarOperator>
+                                                                                                                                            </Else>
+                                                                                                                                        </IF>
+                                                                                                                                    </ScalarOperator>
+                                                                                                                                </Else>
+                                                                                                                            </IF>
+                                                                                                                        </ScalarOperator>
+                                                                                                                    </Else>
+                                                                                                                </IF>
+                                                                                                            </ScalarOperator>
+                                                                                                        </Else>
+                                                                                                    </IF>
+                                                                                                </ScalarOperator>
+                                                                                            </Else>
+                                                                                        </IF>
+                                                                                    </ScalarOperator>
+                                                                                </DefinedValue>
+                                                                            </DefinedValues>
+                                                                            <RelOp NodeId="5"
+                                                                                   PhysicalOp="Compute Scalar"
+                                                                                   LogicalOp="Compute Scalar"
+                                                                                   EstimateRows="1001.57" EstimateIO="0"
+                                                                                   EstimateCPU="0" AvgRowSize="36"
+                                                                                   EstimatedTotalSubtreeCost="0.164348"
+                                                                                   Parallel="0" EstimateRebinds="0"
+                                                                                   EstimateRewinds="0"
+                                                                                   EstimatedExecutionMode="Row">
+                                                                                <OutputList>
+                                                                                    <ColumnReference
+                                                                                            Database="[library_management_system]"
+                                                                                            Schema="[dbo]"
+                                                                                            Table="[borrower]"
+                                                                                            Alias="[br]"
+                                                                                            Column="date_of_birth"/>
+                                                                                    <ColumnReference
+                                                                                            Database="[library_management_system]"
+                                                                                            Schema="[dbo]"
+                                                                                            Table="[book]" Alias="[bo]"
+                                                                                            Column="genre"/>
+                                                                                    <ColumnReference
+                                                                                            Column="Expr1003"/>
+                                                                                </OutputList>
+                                                                                <ComputeScalar>
+                                                                                    <DefinedValues>
+                                                                                        <DefinedValue>
+                                                                                            <ColumnReference
+                                                                                                    Column="Expr1003"/>
+                                                                                            <ScalarOperator
+                                                                                                    ScalarString="CONVERT_IMPLICIT(int,[Expr1016],0)">
+                                                                                                <Convert DataType="int"
+                                                                                                         Style="0"
+                                                                                                         Implicit="1">
+                                                                                                    <ScalarOperator>
+                                                                                                        <Identifier>
+                                                                                                            <ColumnReference
+                                                                                                                    Column="Expr1016"/>
+                                                                                                        </Identifier>
+                                                                                                    </ScalarOperator>
+                                                                                                </Convert>
+                                                                                            </ScalarOperator>
+                                                                                        </DefinedValue>
+                                                                                    </DefinedValues>
+                                                                                    <RelOp NodeId="6"
+                                                                                           PhysicalOp="Stream Aggregate"
+                                                                                           LogicalOp="Aggregate"
+                                                                                           EstimateRows="1001.57"
+                                                                                           EstimateIO="0"
+                                                                                           EstimateCPU="0.00110259"
+                                                                                           AvgRowSize="36"
+                                                                                           EstimatedTotalSubtreeCost="0.164348"
+                                                                                           Parallel="0"
+                                                                                           EstimateRebinds="0"
+                                                                                           EstimateRewinds="0"
+                                                                                           EstimatedExecutionMode="Row">
+                                                                                        <OutputList>
+                                                                                            <ColumnReference
+                                                                                                    Database="[library_management_system]"
+                                                                                                    Schema="[dbo]"
+                                                                                                    Table="[borrower]"
+                                                                                                    Alias="[br]"
+                                                                                                    Column="date_of_birth"/>
+                                                                                            <ColumnReference
+                                                                                                    Database="[library_management_system]"
+                                                                                                    Schema="[dbo]"
+                                                                                                    Table="[book]"
+                                                                                                    Alias="[bo]"
+                                                                                                    Column="genre"/>
+                                                                                            <ColumnReference
+                                                                                                    Column="Expr1016"/>
+                                                                                        </OutputList>
+                                                                                        <RunTimeInformation>
+                                                                                            <RunTimeCountersPerThread
+                                                                                                    Thread="0"
+                                                                                                    ActualRows="988"
+                                                                                                    Batches="0"
+                                                                                                    ActualElapsedms="8"
+                                                                                                    ActualCPUms="8"
+                                                                                                    ActualEndOfScans="1"
+                                                                                                    ActualExecutions="1"
+                                                                                                    ActualExecutionMode="Row"/>
+                                                                                        </RunTimeInformation>
+                                                                                        <StreamAggregate>
+                                                                                            <DefinedValues>
+                                                                                                <DefinedValue>
+                                                                                                    <ColumnReference
+                                                                                                            Column="Expr1016"/>
+                                                                                                    <ScalarOperator
+                                                                                                            ScalarString="Count(*)">
+                                                                                                        <Aggregate
+                                                                                                                AggType="countstar"
+                                                                                                                Distinct="0"/>
+                                                                                                    </ScalarOperator>
+                                                                                                </DefinedValue>
+                                                                                            </DefinedValues>
+                                                                                            <GroupBy>
+                                                                                                <ColumnReference
+                                                                                                        Database="[library_management_system]"
+                                                                                                        Schema="[dbo]"
+                                                                                                        Table="[book]"
+                                                                                                        Alias="[bo]"
+                                                                                                        Column="genre"/>
+                                                                                                <ColumnReference
+                                                                                                        Database="[library_management_system]"
+                                                                                                        Schema="[dbo]"
+                                                                                                        Table="[borrower]"
+                                                                                                        Alias="[br]"
+                                                                                                        Column="date_of_birth"/>
+                                                                                            </GroupBy>
+                                                                                            <RelOp NodeId="7"
+                                                                                                   PhysicalOp="Sort"
+                                                                                                   LogicalOp="Sort"
+                                                                                                   EstimateRows="1003"
+                                                                                                   EstimateIO="0.0112613"
+                                                                                                   EstimateCPU="0.0157001"
+                                                                                                   AvgRowSize="32"
+                                                                                                   EstimatedTotalSubtreeCost="0.163246"
+                                                                                                   Parallel="0"
+                                                                                                   EstimateRebinds="0"
+                                                                                                   EstimateRewinds="0"
+                                                                                                   EstimatedExecutionMode="Row">
+                                                                                                <OutputList>
+                                                                                                    <ColumnReference
+                                                                                                            Database="[library_management_system]"
+                                                                                                            Schema="[dbo]"
+                                                                                                            Table="[borrower]"
+                                                                                                            Alias="[br]"
+                                                                                                            Column="date_of_birth"/>
+                                                                                                    <ColumnReference
+                                                                                                            Database="[library_management_system]"
+                                                                                                            Schema="[dbo]"
+                                                                                                            Table="[book]"
+                                                                                                            Alias="[bo]"
+                                                                                                            Column="genre"/>
+                                                                                                </OutputList>
+                                                                                                <MemoryFractions
+                                                                                                        Input="0.28125"
+                                                                                                        Output="0.473684"/>
+                                                                                                <RunTimeInformation>
+                                                                                                    <RunTimeCountersPerThread
+                                                                                                            Thread="0"
+                                                                                                            ActualRows="1000"
+                                                                                                            Batches="0"
+                                                                                                            ActualElapsedms="8"
+                                                                                                            ActualCPUms="8"
+                                                                                                            ActualScans="0"
+                                                                                                            ActualLogicalReads="0"
+                                                                                                            ActualPhysicalReads="0"
+                                                                                                            ActualReadAheads="0"
+                                                                                                            ActualLobLogicalReads="0"
+                                                                                                            ActualLobPhysicalReads="0"
+                                                                                                            ActualLobReadAheads="0"
+                                                                                                            ActualRebinds="1"
+                                                                                                            ActualRewinds="0"
+                                                                                                            ActualEndOfScans="1"
+                                                                                                            ActualExecutions="1"
+                                                                                                            InputMemoryGrant="704"
+                                                                                                            OutputMemoryGrant="448"
+                                                                                                            UsedMemoryGrant="72"
+                                                                                                            ActualExecutionMode="Row"/>
+                                                                                                </RunTimeInformation>
+                                                                                                <Sort Distinct="0">
+                                                                                                    <OrderBy>
+                                                                                                        <OrderByColumn
+                                                                                                                Ascending="1">
+                                                                                                            <ColumnReference
+                                                                                                                    Database="[library_management_system]"
+                                                                                                                    Schema="[dbo]"
+                                                                                                                    Table="[book]"
+                                                                                                                    Alias="[bo]"
+                                                                                                                    Column="genre"/>
+                                                                                                        </OrderByColumn>
+                                                                                                        <OrderByColumn
+                                                                                                                Ascending="1">
+                                                                                                            <ColumnReference
+                                                                                                                    Database="[library_management_system]"
+                                                                                                                    Schema="[dbo]"
+                                                                                                                    Table="[borrower]"
+                                                                                                                    Alias="[br]"
+                                                                                                                    Column="date_of_birth"/>
+                                                                                                        </OrderByColumn>
+                                                                                                    </OrderBy>
+                                                                                                    <RelOp NodeId="8"
+                                                                                                           PhysicalOp="Hash Match"
+                                                                                                           LogicalOp="Inner Join"
+                                                                                                           EstimateRows="1003"
+                                                                                                           EstimateIO="0"
+                                                                                                           EstimateCPU="0.057297"
+                                                                                                           AvgRowSize="32"
+                                                                                                           EstimatedTotalSubtreeCost="0.136284"
+                                                                                                           Parallel="0"
+                                                                                                           EstimateRebinds="0"
+                                                                                                           EstimateRewinds="0"
+                                                                                                           EstimatedExecutionMode="Row">
+                                                                                                        <OutputList>
+                                                                                                            <ColumnReference
+                                                                                                                    Database="[library_management_system]"
+                                                                                                                    Schema="[dbo]"
+                                                                                                                    Table="[borrower]"
+                                                                                                                    Alias="[br]"
+                                                                                                                    Column="date_of_birth"/>
+                                                                                                            <ColumnReference
+                                                                                                                    Database="[library_management_system]"
+                                                                                                                    Schema="[dbo]"
+                                                                                                                    Table="[book]"
+                                                                                                                    Alias="[bo]"
+                                                                                                                    Column="genre"/>
+                                                                                                        </OutputList>
+                                                                                                        <MemoryFractions
+                                                                                                                Input="0.534884"
+                                                                                                                Output="0.71875"/>
+                                                                                                        <RunTimeInformation>
+                                                                                                            <RunTimeCountersPerThread
+                                                                                                                    Thread="0"
+                                                                                                                    ActualRows="1000"
+                                                                                                                    Batches="0"
+                                                                                                                    ActualElapsedms="5"
+                                                                                                                    ActualCPUms="5"
+                                                                                                                    ActualScans="0"
+                                                                                                                    ActualLogicalReads="0"
+                                                                                                                    ActualPhysicalReads="0"
+                                                                                                                    ActualReadAheads="0"
+                                                                                                                    ActualLobLogicalReads="0"
+                                                                                                                    ActualLobPhysicalReads="0"
+                                                                                                                    ActualLobReadAheads="0"
+                                                                                                                    ActualEndOfScans="1"
+                                                                                                                    ActualExecutions="1"
+                                                                                                                    InputMemoryGrant="1384"
+                                                                                                                    OutputMemoryGrant="1512"
+                                                                                                                    UsedMemoryGrant="648"
+                                                                                                                    ActualExecutionMode="Row"/>
+                                                                                                        </RunTimeInformation>
+                                                                                                        <Hash>
+                                                                                                            <DefinedValues/>
+                                                                                                            <HashKeysBuild>
+                                                                                                                <ColumnReference
+                                                                                                                        Database="[library_management_system]"
+                                                                                                                        Schema="[dbo]"
+                                                                                                                        Table="[loan]"
+                                                                                                                        Alias="[l]"
+                                                                                                                        Column="borrower_id"/>
+                                                                                                            </HashKeysBuild>
+                                                                                                            <HashKeysProbe>
+                                                                                                                <ColumnReference
+                                                                                                                        Database="[library_management_system]"
+                                                                                                                        Schema="[dbo]"
+                                                                                                                        Table="[borrower]"
+                                                                                                                        Alias="[br]"
+                                                                                                                        Column="borrower_id"/>
+                                                                                                            </HashKeysProbe>
+                                                                                                            <RelOp NodeId="9"
+                                                                                                                   PhysicalOp="Hash Match"
+                                                                                                                   LogicalOp="Inner Join"
+                                                                                                                   EstimateRows="1000"
+                                                                                                                   EstimateIO="0"
+                                                                                                                   EstimateCPU="0.034721"
+                                                                                                                   AvgRowSize="28"
+                                                                                                                   EstimatedTotalSubtreeCost="0.063488"
+                                                                                                                   Parallel="0"
+                                                                                                                   EstimateRebinds="0"
+                                                                                                                   EstimateRewinds="0"
+                                                                                                                   EstimatedExecutionMode="Row">
+                                                                                                                <OutputList>
+                                                                                                                    <ColumnReference
+                                                                                                                            Database="[library_management_system]"
+                                                                                                                            Schema="[dbo]"
+                                                                                                                            Table="[loan]"
+                                                                                                                            Alias="[l]"
+                                                                                                                            Column="borrower_id"/>
+                                                                                                                    <ColumnReference
+                                                                                                                            Database="[library_management_system]"
+                                                                                                                            Schema="[dbo]"
+                                                                                                                            Table="[book]"
+                                                                                                                            Alias="[bo]"
+                                                                                                                            Column="genre"/>
+                                                                                                                </OutputList>
+                                                                                                                <MemoryFractions
+                                                                                                                        Input="1"
+                                                                                                                        Output="0.465116"/>
+                                                                                                                <RunTimeInformation>
+                                                                                                                    <RunTimeCountersPerThread
+                                                                                                                            Thread="0"
+                                                                                                                            ActualRows="1000"
+                                                                                                                            Batches="0"
+                                                                                                                            ActualElapsedms="3"
+                                                                                                                            ActualCPUms="3"
+                                                                                                                            ActualScans="0"
+                                                                                                                            ActualLogicalReads="0"
+                                                                                                                            ActualPhysicalReads="0"
+                                                                                                                            ActualReadAheads="0"
+                                                                                                                            ActualLobLogicalReads="0"
+                                                                                                                            ActualLobPhysicalReads="0"
+                                                                                                                            ActualLobReadAheads="0"
+                                                                                                                            ActualEndOfScans="1"
+                                                                                                                            ActualExecutions="1"
+                                                                                                                            InputMemoryGrant="1712"
+                                                                                                                            OutputMemoryGrant="1344"
+                                                                                                                            UsedMemoryGrant="648"
+                                                                                                                            ActualExecutionMode="Row"/>
+                                                                                                                </RunTimeInformation>
+                                                                                                                <Hash>
+                                                                                                                    <DefinedValues/>
+                                                                                                                    <HashKeysBuild>
+                                                                                                                        <ColumnReference
+                                                                                                                                Database="[library_management_system]"
+                                                                                                                                Schema="[dbo]"
+                                                                                                                                Table="[loan]"
+                                                                                                                                Alias="[l]"
+                                                                                                                                Column="book_id"/>
+                                                                                                                    </HashKeysBuild>
+                                                                                                                    <HashKeysProbe>
+                                                                                                                        <ColumnReference
+                                                                                                                                Database="[library_management_system]"
+                                                                                                                                Schema="[dbo]"
+                                                                                                                                Table="[book]"
+                                                                                                                                Alias="[bo]"
+                                                                                                                                Column="book_id"/>
+                                                                                                                    </HashKeysProbe>
+                                                                                                                    <RelOp NodeId="10"
+                                                                                                                           PhysicalOp="Clustered Index Scan"
+                                                                                                                           LogicalOp="Clustered Index Scan"
+                                                                                                                           EstimateRows="1000"
+                                                                                                                           EstimatedRowsRead="1000"
+                                                                                                                           EstimateIO="0.00831019"
+                                                                                                                           EstimateCPU="0.001257"
+                                                                                                                           AvgRowSize="15"
+                                                                                                                           EstimatedTotalSubtreeCost="0.00956719"
+                                                                                                                           TableCardinality="1000"
+                                                                                                                           Parallel="0"
+                                                                                                                           EstimateRebinds="0"
+                                                                                                                           EstimateRewinds="0"
+                                                                                                                           EstimatedExecutionMode="Row">
+                                                                                                                        <OutputList>
+                                                                                                                            <ColumnReference
+                                                                                                                                    Database="[library_management_system]"
+                                                                                                                                    Schema="[dbo]"
+                                                                                                                                    Table="[loan]"
+                                                                                                                                    Alias="[l]"
+                                                                                                                                    Column="book_id"/>
+                                                                                                                            <ColumnReference
+                                                                                                                                    Database="[library_management_system]"
+                                                                                                                                    Schema="[dbo]"
+                                                                                                                                    Table="[loan]"
+                                                                                                                                    Alias="[l]"
+                                                                                                                                    Column="borrower_id"/>
+                                                                                                                        </OutputList>
+                                                                                                                        <RunTimeInformation>
+                                                                                                                            <RunTimeCountersPerThread
+                                                                                                                                    Thread="0"
+                                                                                                                                    ActualRows="1000"
+                                                                                                                                    Batches="0"
+                                                                                                                                    ActualElapsedms="0"
+                                                                                                                                    ActualCPUms="0"
+                                                                                                                                    ActualScans="1"
+                                                                                                                                    ActualLogicalReads="10"
+                                                                                                                                    ActualPhysicalReads="0"
+                                                                                                                                    ActualReadAheads="0"
+                                                                                                                                    ActualLobLogicalReads="0"
+                                                                                                                                    ActualLobPhysicalReads="0"
+                                                                                                                                    ActualLobReadAheads="0"
+                                                                                                                                    ActualRowsRead="1000"
+                                                                                                                                    ActualEndOfScans="1"
+                                                                                                                                    ActualExecutions="1"
+                                                                                                                                    ActualExecutionMode="Row"/>
+                                                                                                                        </RunTimeInformation>
+                                                                                                                        <IndexScan
+                                                                                                                                Ordered="0"
+                                                                                                                                ForcedIndex="0"
+                                                                                                                                ForceScan="0"
+                                                                                                                                NoExpandHint="0"
+                                                                                                                                Storage="RowStore">
+                                                                                                                            <DefinedValues>
+                                                                                                                                <DefinedValue>
+                                                                                                                                    <ColumnReference
+                                                                                                                                            Database="[library_management_system]"
+                                                                                                                                            Schema="[dbo]"
+                                                                                                                                            Table="[loan]"
+                                                                                                                                            Alias="[l]"
+                                                                                                                                            Column="book_id"/>
+                                                                                                                                </DefinedValue>
+                                                                                                                                <DefinedValue>
+                                                                                                                                    <ColumnReference
+                                                                                                                                            Database="[library_management_system]"
+                                                                                                                                            Schema="[dbo]"
+                                                                                                                                            Table="[loan]"
+                                                                                                                                            Alias="[l]"
+                                                                                                                                            Column="borrower_id"/>
+                                                                                                                                </DefinedValue>
+                                                                                                                            </DefinedValues>
+                                                                                                                            <Object Database="[library_management_system]"
+                                                                                                                                    Schema="[dbo]"
+                                                                                                                                    Table="[loan]"
+                                                                                                                                    Index="[PK__loan__A1F7955401314DAE]"
+                                                                                                                                    Alias="[l]"
+                                                                                                                                    IndexKind="Clustered"
+                                                                                                                                    Storage="RowStore"/>
+                                                                                                                        </IndexScan>
+                                                                                                                    </RelOp>
+                                                                                                                    <RelOp NodeId="11"
+                                                                                                                           PhysicalOp="Clustered Index Scan"
+                                                                                                                           LogicalOp="Clustered Index Scan"
+                                                                                                                           EstimateRows="1000"
+                                                                                                                           EstimatedRowsRead="1000"
+                                                                                                                           EstimateIO="0.0179398"
+                                                                                                                           EstimateCPU="0.001257"
+                                                                                                                           AvgRowSize="28"
+                                                                                                                           EstimatedTotalSubtreeCost="0.0191968"
+                                                                                                                           TableCardinality="1000"
+                                                                                                                           Parallel="0"
+                                                                                                                           EstimateRebinds="0"
+                                                                                                                           EstimateRewinds="0"
+                                                                                                                           EstimatedExecutionMode="Row">
+                                                                                                                        <OutputList>
+                                                                                                                            <ColumnReference
+                                                                                                                                    Database="[library_management_system]"
+                                                                                                                                    Schema="[dbo]"
+                                                                                                                                    Table="[book]"
+                                                                                                                                    Alias="[bo]"
+                                                                                                                                    Column="book_id"/>
+                                                                                                                            <ColumnReference
+                                                                                                                                    Database="[library_management_system]"
+                                                                                                                                    Schema="[dbo]"
+                                                                                                                                    Table="[book]"
+                                                                                                                                    Alias="[bo]"
+                                                                                                                                    Column="genre"/>
+                                                                                                                        </OutputList>
+                                                                                                                        <RunTimeInformation>
+                                                                                                                            <RunTimeCountersPerThread
+                                                                                                                                    Thread="0"
+                                                                                                                                    ActualRows="1000"
+                                                                                                                                    Batches="0"
+                                                                                                                                    ActualElapsedms="1"
+                                                                                                                                    ActualCPUms="1"
+                                                                                                                                    ActualScans="1"
+                                                                                                                                    ActualLogicalReads="23"
+                                                                                                                                    ActualPhysicalReads="0"
+                                                                                                                                    ActualReadAheads="0"
+                                                                                                                                    ActualLobLogicalReads="0"
+                                                                                                                                    ActualLobPhysicalReads="0"
+                                                                                                                                    ActualLobReadAheads="0"
+                                                                                                                                    ActualRowsRead="1000"
+                                                                                                                                    ActualEndOfScans="1"
+                                                                                                                                    ActualExecutions="1"
+                                                                                                                                    ActualExecutionMode="Row"/>
+                                                                                                                        </RunTimeInformation>
+                                                                                                                        <IndexScan
+                                                                                                                                Ordered="0"
+                                                                                                                                ForcedIndex="0"
+                                                                                                                                ForceScan="0"
+                                                                                                                                NoExpandHint="0"
+                                                                                                                                Storage="RowStore">
+                                                                                                                            <DefinedValues>
+                                                                                                                                <DefinedValue>
+                                                                                                                                    <ColumnReference
+                                                                                                                                            Database="[library_management_system]"
+                                                                                                                                            Schema="[dbo]"
+                                                                                                                                            Table="[book]"
+                                                                                                                                            Alias="[bo]"
+                                                                                                                                            Column="book_id"/>
+                                                                                                                                </DefinedValue>
+                                                                                                                                <DefinedValue>
+                                                                                                                                    <ColumnReference
+                                                                                                                                            Database="[library_management_system]"
+                                                                                                                                            Schema="[dbo]"
+                                                                                                                                            Table="[book]"
+                                                                                                                                            Alias="[bo]"
+                                                                                                                                            Column="genre"/>
+                                                                                                                                </DefinedValue>
+                                                                                                                            </DefinedValues>
+                                                                                                                            <Object Database="[library_management_system]"
+                                                                                                                                    Schema="[dbo]"
+                                                                                                                                    Table="[book]"
+                                                                                                                                    Index="[PK__book__490D1AE10EFE8A9F]"
+                                                                                                                                    Alias="[bo]"
+                                                                                                                                    IndexKind="Clustered"
+                                                                                                                                    Storage="RowStore"/>
+                                                                                                                        </IndexScan>
+                                                                                                                    </RelOp>
+                                                                                                                </Hash>
+                                                                                                            </RelOp>
+                                                                                                            <RelOp NodeId="12"
+                                                                                                                   PhysicalOp="Clustered Index Scan"
+                                                                                                                   LogicalOp="Clustered Index Scan"
+                                                                                                                   EstimateRows="1003"
+                                                                                                                   EstimatedRowsRead="1003"
+                                                                                                                   EstimateIO="0.0142361"
+                                                                                                                   EstimateCPU="0.0012603"
+                                                                                                                   AvgRowSize="19"
+                                                                                                                   EstimatedTotalSubtreeCost="0.0154964"
+                                                                                                                   TableCardinality="1003"
+                                                                                                                   Parallel="0"
+                                                                                                                   EstimateRebinds="0"
+                                                                                                                   EstimateRewinds="0"
+                                                                                                                   EstimatedExecutionMode="Row">
+                                                                                                                <OutputList>
+                                                                                                                    <ColumnReference
+                                                                                                                            Database="[library_management_system]"
+                                                                                                                            Schema="[dbo]"
+                                                                                                                            Table="[borrower]"
+                                                                                                                            Alias="[br]"
+                                                                                                                            Column="borrower_id"/>
+                                                                                                                    <ColumnReference
+                                                                                                                            Database="[library_management_system]"
+                                                                                                                            Schema="[dbo]"
+                                                                                                                            Table="[borrower]"
+                                                                                                                            Alias="[br]"
+                                                                                                                            Column="date_of_birth"/>
+                                                                                                                </OutputList>
+                                                                                                                <RunTimeInformation>
+                                                                                                                    <RunTimeCountersPerThread
+                                                                                                                            Thread="0"
+                                                                                                                            ActualRows="1003"
+                                                                                                                            Batches="0"
+                                                                                                                            ActualElapsedms="0"
+                                                                                                                            ActualCPUms="0"
+                                                                                                                            ActualScans="1"
+                                                                                                                            ActualLogicalReads="18"
+                                                                                                                            ActualPhysicalReads="0"
+                                                                                                                            ActualReadAheads="0"
+                                                                                                                            ActualLobLogicalReads="0"
+                                                                                                                            ActualLobPhysicalReads="0"
+                                                                                                                            ActualLobReadAheads="0"
+                                                                                                                            ActualRowsRead="1003"
+                                                                                                                            ActualEndOfScans="1"
+                                                                                                                            ActualExecutions="1"
+                                                                                                                            ActualExecutionMode="Row"/>
+                                                                                                                </RunTimeInformation>
+                                                                                                                <IndexScan
+                                                                                                                        Ordered="0"
+                                                                                                                        ForcedIndex="0"
+                                                                                                                        ForceScan="0"
+                                                                                                                        NoExpandHint="0"
+                                                                                                                        Storage="RowStore">
+                                                                                                                    <DefinedValues>
+                                                                                                                        <DefinedValue>
+                                                                                                                            <ColumnReference
+                                                                                                                                    Database="[library_management_system]"
+                                                                                                                                    Schema="[dbo]"
+                                                                                                                                    Table="[borrower]"
+                                                                                                                                    Alias="[br]"
+                                                                                                                                    Column="borrower_id"/>
+                                                                                                                        </DefinedValue>
+                                                                                                                        <DefinedValue>
+                                                                                                                            <ColumnReference
+                                                                                                                                    Database="[library_management_system]"
+                                                                                                                                    Schema="[dbo]"
+                                                                                                                                    Table="[borrower]"
+                                                                                                                                    Alias="[br]"
+                                                                                                                                    Column="date_of_birth"/>
+                                                                                                                        </DefinedValue>
+                                                                                                                    </DefinedValues>
+                                                                                                                    <Object Database="[library_management_system]"
+                                                                                                                            Schema="[dbo]"
+                                                                                                                            Table="[borrower]"
+                                                                                                                            Index="[PK__borrower__FCA592693718EE88]"
+                                                                                                                            Alias="[br]"
+                                                                                                                            IndexKind="Clustered"
+                                                                                                                            Storage="RowStore"/>
+                                                                                                                </IndexScan>
+                                                                                                            </RelOp>
+                                                                                                        </Hash>
+                                                                                                    </RelOp>
+                                                                                                </Sort>
+                                                                                            </RelOp>
+                                                                                        </StreamAggregate>
+                                                                                    </RelOp>
+                                                                                </ComputeScalar>
+                                                                            </RelOp>
+                                                                        </ComputeScalar>
+                                                                    </RelOp>
+                                                                </Sort>
+                                                            </RelOp>
+                                                        </Segment>
+                                                    </RelOp>
+                                                </SequenceProject>
+                                            </RelOp>
+                                            <Predicate>
+                                                <ScalarOperator ScalarString="[Expr1005]=(1)">
+                                                    <Compare CompareOp="EQ">
+                                                        <ScalarOperator>
+                                                            <Identifier>
+                                                                <ColumnReference Column="Expr1005"/>
+                                                            </Identifier>
+                                                        </ScalarOperator>
+                                                        <ScalarOperator>
+                                                            <Const ConstValue="(1)"/>
+                                                        </ScalarOperator>
+                                                    </Compare>
+                                                </ScalarOperator>
+                                            </Predicate>
+                                        </Filter>
+                                    </RelOp>
+                                </QueryPlan>
+                            </StmtSimple>
+                        </Statements>
+                    </Batch>
+                </BatchSequence>
+            </ShowPlanXML>
+        </Microsoft_SQL_Server_2005_XML_Showplan>
+    </row>
+</data>
