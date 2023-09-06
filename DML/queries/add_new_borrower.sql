@@ -1,5 +1,4 @@
 USE library_management_system;
-
 GO
 
 IF NOT EXISTS(SELECT 1
