@@ -15,8 +15,8 @@ IF NOT EXISTS (SELECT 1
             genre          NVARCHAR(50)               NOT NULL,
             shelf_location NVARCHAR(100)              NOT NULL,
             is_available   BIT      DEFAULT 1         NOT NULL,
-            created_at     DATETIME DEFAULT GETDATE() NOT NULL,
-            updated_at     DATETIME DEFAULT GETDATE() NOT NULL,
+            created_on     DATETIME DEFAULT GETDATE() NOT NULL,
+            updated_on     DATETIME DEFAULT GETDATE() NOT NULL,
             CONSTRAINT CHK_GenreEnum CHECK (genre IN (
                                                       'Thriller', 'Documentary', 'Drama', 'Horror', 'Romance',
                                                       'Mystery', 'Crime', 'Comedy', 'Western', 'Children', 'Action',
@@ -40,8 +40,8 @@ IF NOT EXISTS(SELECT 1
             email           NVARCHAR(319) NOT NULL UNIQUE,
             date_of_birth   DATETIME      NOT NULL,
             membership_date DATETIME      NOT NULL DEFAULT GETDATE(),
-            created_at      DATETIME      NOT NULL DEFAULT GETDATE(),
-            updated_at      DATETIME      NOT NULL DEFAULT GETDATE(),
+            created_on      DATETIME      NOT NULL DEFAULT GETDATE(),
+            updated_on      DATETIME      NOT NULL DEFAULT GETDATE(),
         );
     END;
 
@@ -60,8 +60,8 @@ IF NOT EXISTS(SELECT 1
             date_borrowed DATETIME NOT NULL DEFAULT GETDate(),
             due_date      DATETIME NOT NULL,
             date_returned DATETIME          DEFAULT null,
-            created_at    DATETIME NOT NULL DEFAULT GETDATE(),
-            updated_at    DATETIME NOT NULL DEFAULT GETDATE(),
+            created_on    DATETIME NOT NULL DEFAULT GETDATE(),
+            updated_on    DATETIME NOT NULL DEFAULT GETDATE(),
             CONSTRAINT book_id_fk FOREIGN KEY (book_id) REFERENCES book (book_id),
             CONSTRAINT borrower_id_fk FOREIGN KEY (borrower_id) REFERENCES borrower (borrower_id),
         );
@@ -94,9 +94,9 @@ IF NOT EXISTS(SELECT 1
         CREATE TABLE error_log
         (
             error_log_id   INT PRIMARY KEY IDENTITY (1, 1),
-            error_message  NVARCHAR(4000),
-            error_severity INT,
-            error_state    INT,
+            message  NVARCHAR(4000),
+            severity INT,
+            state    INT,
             logged_at      DATETIME,
         );
     END;

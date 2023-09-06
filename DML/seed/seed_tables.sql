@@ -2,7 +2,7 @@ USE library_management_system;
 
 GO
 
-INSERT INTO book (title, author, isbn, genre, shelf_location, is_available, created_at, updated_at)
+INSERT INTO book (title, author, isbn, genre, shelf_location, is_available, created_on, updated_on)
 VALUES ('Daydreams', 'Margaret Redpath', '721771930-5', 'Fantasy', '18th Floor', 0, '01/24/2005', '02/21/2018'),
        ('Red Riding: 1980', 'Karlee McShea', '694943331-X', 'Fantasy', 'Room 203', 0, '08/06/2015', '02/28/2006'),
        ('Skidoo', 'Haleigh Cron', '851212698-1', 'Fantasy', 'Room 8', 0, '12/09/2011', '08/16/2018'),
@@ -1403,7 +1403,7 @@ VALUES ('Daydreams', 'Margaret Redpath', '721771930-5', 'Fantasy', '18th Floor',
        ('The Indifferent Beauty', 'Batsheva Bellino', '021067538-1', 'Romance', 'Apt 618', 1, '06/12/2023',
         '08/13/2012');
 
-INSERT INTO borrower (first_name, last_name, email, date_of_birth, membership_date, created_at, updated_at)
+INSERT INTO borrower (first_name, last_name, email, date_of_birth, membership_date, created_on, updated_on)
 VALUES ('Francis', 'Dietz', 'fdietz0@yolasite.com', '9/23/2020', '12/16/2015', '4/14/2018', '9/14/2012'),
        ('Barrie', 'Riccard', 'briccard1@zdnet.com', '12/1/1970', '1/28/2008', '1/9/2006', '1/5/2006'),
        ('Lilla', 'Lackington', 'llackington2@wordpress.com', '3/4/1972', '2/6/2012', '2/12/2023', '5/10/2020'),
@@ -2415,7 +2415,7 @@ VALUES ('Francis', 'Dietz', 'fdietz0@yolasite.com', '9/23/2020', '12/16/2015', '
 
 GO
 
-INSERT INTO loan (book_id, borrower_id, date_borrowed, due_date, date_returned, created_at, updated_at)
+INSERT INTO loan (book_id, borrower_id, date_borrowed, due_date, date_returned, created_on, updated_on)
 VALUES (1, 1, '7/12/2023', '8/20/2023', null, '5/27/2012', '4/20/2009'),
        (2, 2, '7/12/2023', '8/20/2023', null, '5/25/2013', '6/27/2017'),
        (3, 3, '7/12/2023', '8/24/2023', null, '7/1/2010', '4/12/2022'),
